@@ -18,5 +18,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+//para verlo en el remoto: http://cmd-laravel.ddns.net/index.php/visitas
+
 //al no indicar corchete, busca la clase __invoke del controlador
 Route::get('visitas/{contador?}', VisitasController::class);
+
+Route::get('agenda', function () {
+    return view('agenda');
+});
