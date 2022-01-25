@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CentroController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
@@ -14,10 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{lang}', function ($lang) {
-    App::setlocale($lang);
+Route::get('/', function () {
 
-    return view('centros.create');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
@@ -25,3 +25,5 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::resource('{lang}/centros', CentroController::class)->middleware('auth');

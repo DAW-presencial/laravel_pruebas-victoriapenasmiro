@@ -12,9 +12,9 @@ class CentroController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($lang)
     {
-        //
+        return redirect()->route('centros.create', compact('lang'));
     }
 
     /**
@@ -24,6 +24,8 @@ class CentroController extends Controller
      */
     public function create($lang)
     {
+        $this->authorize('check-language', $lang);
+
         return view('centros.create', compact('lang'));
     }
 
@@ -33,7 +35,7 @@ class CentroController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCentro $request)
+    public function store(StoreCentro $request, $lang)
     {
         return redirect('/');
     }
