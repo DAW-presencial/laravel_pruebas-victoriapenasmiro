@@ -14,5 +14,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        $this->call([
+            AmbitoSeeder::class, //completo los valores de la tabla ambito
+        ]);
     }
 }
