@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCentro;
 use Illuminate\Http\Request;
 
 class CentroController extends Controller
@@ -32,18 +33,9 @@ class CentroController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCentro $request)
     {
-        $request->validate([
-            'nombre'=> 'required',
-            'asd' => 'required',
-            'descripcion' => 'required',
-            'fecha_alta' => 'required',
-            'radios' => 'required',
-            'guarderia' => 'required',
-            'categoria' => 'required',
-            'ambitos' => 'required',
-        ]);
+        return redirect('/');
     }
 
     /**
