@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Ambito;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AmbitoSeeder extends Seeder
 {
@@ -21,5 +22,7 @@ class AmbitoSeeder extends Seeder
             ['nombre' => 'bachiller'],
             ['nombre' => 'fp'],
         ];
+
+        DB::table('ambitos')->insert($ambitos);
     }
 }

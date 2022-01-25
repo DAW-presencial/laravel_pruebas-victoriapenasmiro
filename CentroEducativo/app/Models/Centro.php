@@ -19,6 +19,5 @@ class Centro extends Model
         'opcion_radio',
         'guarderia',
         'categoria',
-
     ];
 }
