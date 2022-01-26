@@ -3,6 +3,7 @@
 use App\Http\Controllers\CentroController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,8 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::resource('{lang}/centros', CentroController::class)->middleware('auth');
+
+//Si la ruta no existe puedo indicar qué vista mostrar
+Route::fallback(function(){
+  return view('/dashboard');
+});

@@ -13,7 +13,7 @@ return [
     'guarderia' => 'kindergarten',
     'con_guarderia' => 'Has kindergarten',
     'categoria' => 'Category',
-    'select_ambitos' => 'Select areas (ctrl + click)',
+    'ambitos' => 'Select areas (ctrl + click)',
     'infantil' => 'Childish',
     'primaria' => 'Primary',
     'eso' => 'ESO',

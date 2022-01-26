@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
         DB::table('centros')->insert($centros);
 
         //Eloquent
-
         Centro::factory(1)->create();
 
         //completo la tabla de comunidades con el id del administrador, sin factories

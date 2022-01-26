@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Gate;
 
 class StoreCentro extends FormRequest
 {
@@ -13,7 +15,7 @@ class StoreCentro extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +25,13 @@ class StoreCentro extends FormRequest
      */
     public function rules()
     {
+        //recupero el lang.
+        //importante para mostrar warnings de error en el idioma correspondiente
+        $lang = $this->route('lang');
+        abort_unless(Gate::allows('check-language', $lang), 403);
+
         return [
-            'nombre'=> 'required',
+            'nombre' => 'required',
             'asd' => 'required',
             'descripcion' => 'required',
             'fecha_alta' => 'required',

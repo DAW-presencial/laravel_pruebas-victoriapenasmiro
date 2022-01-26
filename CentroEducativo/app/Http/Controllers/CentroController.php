@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCentro;
+use App\Models\Ambito;
+use App\Models\Centro;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class CentroController extends Controller
 {
@@ -24,9 +28,11 @@ class CentroController extends Controller
      */
     public function create($lang)
     {
+        $ambitos = Ambito::all();
+
         $this->authorize('check-language', $lang);
 
-        return view('centros.create', compact('lang'));
+        return view('centros.create', compact('lang', 'ambitos'));
     }
 
     /**
@@ -37,7 +43,9 @@ class CentroController extends Controller
      */
     public function store(StoreCentro $request, $lang)
     {
-        return redirect('/');
+        $centro = Centro::create($request->all());
+
+        return redirect(RouteServiceProvider::HOME);
     }
 
     /**
