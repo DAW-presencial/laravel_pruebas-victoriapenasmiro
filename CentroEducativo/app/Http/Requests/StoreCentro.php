@@ -32,10 +32,10 @@ class StoreCentro extends FormRequest
 
         return [
             'nombre' => 'required',
-            'asd' => 'required',
+            'cod_asd' => 'required',
             'descripcion' => 'required',
-            'fecha_alta' => 'required',
-            'radios' => 'required',
+            'fec_comienzo_actividad' => 'required',
+            'opcion_radio' => 'required',
             'guarderia' => 'required',
             'categoria' => 'required',
             'ambitos' => 'required',

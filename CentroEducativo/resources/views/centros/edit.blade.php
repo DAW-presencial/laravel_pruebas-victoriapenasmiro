@@ -1,9 +1,9 @@
 @extends('layouts.base')
-@section('title', 'Nuevo Centro')
+@section('title', 'Editar centro ' . $centro->name)
 
 @section('content')
 
-    <h1 class="mb-5 text-center">@lang('centros.nuevo_centro')</h1>
+    <h1 class="mb-5 text-center">Editar centro {{ $centro->name }}</h1>
 
     {{-- warning de errores de validacion del formulario --}}
     @if ($errors->any())
@@ -16,16 +16,20 @@
         </div>
     @endif
 
-    <form action="{{ route('centros.store', $lang) }}" method="POST">
+    <form action="{{ route('centros.update', [$lang, $centro]) }}" method="POST">
 
         {{-- genero token para poder enviar el formulario. Directoiva obligatoria en Laravel --}}
         @csrf
+
+        {{-- Para actualizar registro, se debe hacer con el metodo PUT, y como html no permite 
+            más que GET y POST, utilizamos esta directiva para especificarlo dejando el méthod en POST --}}
+        @method("put")
 
         <div class="form-group row">
             <label for="nombre" class="col-sm-2 col-form-label">{{ __('centros.nombre') }}</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="nombre" name="nombre"
-                    placeholder="{{ __('centros.nombre') }}" value="{{ old('nombre') }}">
+                    placeholder="{{ __('centros.nombre') }}" value="{{ old('nombre', $centro->nombre) }}">
                 @error('nombre')
                     <small class="text-danger">*{{ "$message" }}</small>
                 @enderror
@@ -35,8 +39,8 @@
         <div class="form-group row">
             <label for="asd" class="col-sm-2 col-form-label">{{ __('centros.asd') }}</label>
             <div class="col-sm-10">
-                <input type="number" class="form-control" id="asd" name="cod_asd" value="{{ old('cod_asd') }}"
-                    placeholder="{{ __('centros.asd') }}">
+                <input type="number" class="form-control" id="asd" name="cod_asd"
+                    value="{{ old('cod_asd', $centro->cod_asd) }}" placeholder="{{ __('centros.asd') }}">
                 @error('cod_asd')
                     <small class="text-danger">*{{ $message }}</small>
                 @enderror
@@ -47,7 +51,7 @@
             <label for="descripcion" class="col-sm-2 col-form-label">{{ __('centros.descripcion') }}</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="descripcion" name="descripcion"
-                    placeholder="{{ __('centros.descrip_centro') }}">{{ old('descripcion') }}</textarea>
+                    placeholder="{{ __('centros.descrip_centro') }}">{{ old('descripcion', $centro->descripcion) }}</textarea>
                 @error('descripcion')
                     <small class="text-danger">*{{ $message }}</small>
                 @enderror
@@ -58,7 +62,8 @@
             <label for="fecha_alta" class="col-sm-2 col-form-label">@lang('centros.fec_alta')</label>
             <div class="col-sm-10">
                 <input type="date" class="form-control" id="fecha_alta" name="fec_comienzo_actividad"
-                    value="{{ old('fec_comienzo_actividad') }}" placeholder="@lang('centros.fec_alta')">
+                    value="{{ old('fec_comienzo_actividad', $centro->fec_comienzo_actividad) }}"
+                    placeholder="@lang('centros.fec_alta')">
                 @error('fec_comienzo_actividad')
                     <small class="text-danger">*{{ $message }}</small>
 
@@ -72,20 +77,31 @@
                 <div class="col-sm-10">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="opcion_radio" id="radio1" value="option1"
-                            {{ old('opcion_radio') == 'option1' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="radio1">
+                            {{-- Si no existe y no es la primera vez que se accede al registro se marca checked --}}
+                        @if (old('opcion_radio') == 'option1')
+                            checked
+                        @elseif(!old('opcion_radio') && !$errors->any())
+                            checked
+                        @endif
+                        > <label class="form-check-label" for="radio1">
                             @lang('centros.primer_radio')
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="opcion_radio" id="radio2" value="option2"
-                            {{ old('opcion_radio') == 'option2' ? 'checked' : '' }}>
+                        @if (old('opcion_radio') == 'option2')
+                            checked
+                        @elseif(!old('opcion_radio') && !$errors->any())
+                            checked
+                        @endif
+                        >
                         <label class="form-check-label" for="radio2">
                             @lang('centros.segundo_radio')
                         </label>
                     </div>
                     <div class="form-check disabled">
-                        <input class="form-check-input" type="radio" name="opcion_radio" id="radio3" value="option3" disabled>
+                        <input class="form-check-input" type="radio" name="opcion_radio" id="radio3" value="option3"
+                            disabled>
                         <label class="form-check-label" for="radio3">
                             @lang('centros.tercer_radio')
                         </label>
@@ -102,7 +118,14 @@
             <div class="col-sm-10">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="guarderia" name="guarderia" value="1"
-                        {{ old('guarderia') ? 'checked' : '' }}>
+                        {{-- Si no existe y no es la primera vez que se accede al registro se marca checked --}}
+                    @if (old('guarderia'))
+                        checked
+                    @elseif(!old('guarderia') && !$errors->any())
+                        checked
+                    @endif
+                    >
+
                     <label class="form-check-label" for="guarderia">
                         @lang('centros.con_guarderia')
                     </label>
@@ -121,7 +144,8 @@
                     @if ($i === 0)
                         <option disabled selected>@lang('centros.selecciona')</option>
                     @else
-                        <option value="{{ $i }}" {{ old('categoria') == $i ? 'selected' : '' }}>
+                        <option value="{{ $i }}"
+                            {{ old('categoria', $centro->categoria) == $i ? 'selected' : '' }}>
                             {{ $i }}</option>
                     @endif
                 @endfor
@@ -136,8 +160,15 @@
             <select multiple class="form-control" id="ambitos" name="ambitos[]">
 
                 @foreach ($ambitos as $ambito)
-                    <option value="{{ $ambito->id }}" @if (old('ambitos')){{ in_array($ambito->id, old('ambitos')) ? 'selected' : '' }}@endif>
-                        {{ __('centros.' . $ambito->nombre) }}</option>
+                    <option value="{{ $ambito->id }}"
+                                                
+                    @if (old('ambitos'))
+                        {{ in_array($ambito->id, old('ambitos')) ? 'selected' : '' }}
+                    @elseif(!old('ambitos') && !$errors->any() && in_array($ambito->id, $ambitos_id))
+                        selected
+                    @endif
+                >
+                {{ __('centros.' . $ambito->nombre) }}</option>
                 @endforeach
 
             </select>
@@ -148,9 +179,10 @@
 
         <div class="form-group row">
             <div class="col-sm-10">
-                <button type="submit" class="btn btn-success">{{ __('centros.registrar') }}</button>
+                <button type="submit" class="btn btn-success">{{ __('centros.actualizar') }}</button>
                 <a href="{{ route('centros.index', $lang) }}" class="btn btn-primary">@lang('centros.volver')</a>
             </div>
         </div>
     </form>
+
 @endsection

@@ -20,4 +20,7 @@ return [
     'bachiller' => 'Bachelor',
     'fp' => 'PF',
     'registrar' => 'Register',
+    'volver' => "Go back",
+    'actualizar' => "Update",
+    'selecciona' => "Please, select an option",
 ];

@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCentro;
 use App\Models\Ambito;
 use App\Models\Centro;
+use App\Models\Centro_Ambito;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 class CentroController extends Controller
 {
@@ -18,7 +19,10 @@ class CentroController extends Controller
      */
     public function index($lang)
     {
-        return redirect()->route('centros.create', compact('lang'));
+        $centros = Centro::all();
+
+        return view('centros.index', compact('lang', 'centros'));
+        //return redirect()->route('centros.create', compact('lang'));
     }
 
     /**
@@ -45,7 +49,11 @@ class CentroController extends Controller
     {
         $centro = Centro::create($request->all());
 
-        return redirect(RouteServiceProvider::HOME);
+        //completo la tabla centros_ambitos
+        $centro->ambitos()->attach($request->input('ambitos'));
+
+        //almaceno en una sesión un mensaje de éxito para mostrar en alert
+        return redirect()->to(RouteServiceProvider::HOME)->with('exito', 'Centro registrado correctamente');
     }
 
     /**
@@ -54,9 +62,20 @@ class CentroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($lang, Centro $centro)
     {
-        //
+        $this->authorize('check-language', $lang);
+
+        //recupero el listado de ambitos de este centro
+        $ambitos_id = $centro->ambitos()->allRelatedIds()->toArray();
+
+        $listado_ambitos = [];
+
+        foreach ($ambitos_id as $ambito) {
+            array_push($listado_ambitos, Ambito::find($ambito)->nombre);
+        }
+
+        return view('centros.show', compact('lang', 'centro', 'listado_ambitos'));
     }
 
     /**
@@ -65,9 +84,16 @@ class CentroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($lang, Centro $centro)
     {
-        //
+        $ambitos = Ambito::all();
+        
+        //recupero el listado de ambitos de este centro
+        $ambitos_id = $centro->ambitos()->allRelatedIds()->toArray();
+
+        $this->authorize('check-language', $lang);
+
+        return view('centros.edit', compact('lang', 'centro', 'ambitos', 'ambitos_id'));
     }
 
     /**
@@ -77,9 +103,15 @@ class CentroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreCentro $request, $lang, Centro $centro)
     {
-        //
+        //actualización por asignación masiva
+        $centro->update($request->all());
+
+        //actualizo la tabla intermedia centros_ambitos
+        $centro->ambitos()->sync($request->input('ambitos'));
+
+        return redirect()->route('centros.show', compact('lang', 'centro'));
     }
 
     /**
@@ -88,8 +120,14 @@ class CentroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($lang, Centro $centro)
     {
-        //
+        $centro->delete();
+
+        // Elimino la relación del centro con ambitos dentro de centros_ambitos
+        $centro->ambitos()->detach();
+
+        //almaceno en una sesión un mensaje de éxito para mostrar en alert
+        return redirect()->route('centros.index', compact('lang'))->with('eliminado', 'Centro eliminado correctamente');
     }
 }

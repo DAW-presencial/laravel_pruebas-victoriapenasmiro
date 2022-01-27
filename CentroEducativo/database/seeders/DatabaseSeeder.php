@@ -5,8 +5,11 @@ namespace Database\Seeders;
 use App\Models\Ambito;
 use App\Models\Centro;
 use App\Models\Centro_Ambito;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -54,5 +57,15 @@ class DatabaseSeeder extends Seeder
                 'ambito_id' => $ambito->id,
             ]);
         }
+
+        //genero usuario administrador
+        $admin = User::create([
+            'name' => 'Administrador',
+            'email' => 'mpenas@cifpfbmoll.eu',
+            'email_verified_at' => now(),
+            'password' => Hash::make('Sistemas1310'),
+            'remember_token' => Str::random(10),
+        ]);
+
     }
 }

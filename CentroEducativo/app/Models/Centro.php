@@ -20,4 +20,12 @@ class Centro extends Model
         'guarderia',
         'categoria',
     ];
+
+
+    /**
+     * Un centro tiene muchos ambitos
+     */
+    public function ambitos() {
+        return $this->belongsToMany(Ambito::class, 'centros_ambitos', 'centro_id', 'ambito_id')->withTimestamps();
+    }
 }

@@ -12,4 +12,11 @@ class Ambito extends Model
     protected $fillable = [
         'nombre',
     ];
+
+    /**
+     * Un ambito tiene muchos centros
+     */
+    public function centros() {
+        return $this->belongsToMany(Centro::class)->withTimestamps();
+    }
 }
