@@ -22,14 +22,19 @@
         </li>
     </ul>
 
+    @can('delete', $can_modify)
     <form action="{{ route('centros.destroy', [$lang, $centro]) }}" method="POST" style="display:inline;">
         @csrf
         @method('delete')
 
         <button type="submit" class="btn btn-danger">Eliminar</button>
     </form>
+    @endcan
 
+    @can('update', $can_modify)
     <a href="{{ route('centros.edit', [$lang, $centro]) }}" class="btn btn-success">Editar centro</a>
+    @endcan
+    
     <a href="{{ route('centros.index', $lang) }}" class="btn btn-primary">Volver al listado</a>
 
 @endsection

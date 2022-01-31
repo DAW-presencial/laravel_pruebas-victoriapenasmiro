@@ -47,20 +47,27 @@
                     <td>{{ $centro->cod_asd }}</td>
                     <td>{{ $centro->fec_comienzo_actividad }}</td>
                     <td><a href={{ route('centros.show', [$lang, $centro]) }} class="btn btn-primary">Ver</a></td>
-                    <td><a href={{ route('centros.edit', [$lang, $centro]) }} class="btn btn-success">Editar</a></td>
                     <td>
+                        @can('update', $can_modify)
+                        <a href={{ route('centros.edit', [$lang, $centro]) }} class="btn btn-success">Editar</a>
+                        @endcan
+                    </td>
+                    <td>
+                        @can('delete', $can_modify)
                         <form action="{{ route('centros.destroy', [$lang, $centro]) }}" method="POST">
                             @csrf
                             @method('delete')
 
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
+                        @endcan
                 </tr>
             @endforeach
         </tbody>
     </table>
 
+    @can('create', $can_modify)
     <a href="{{ route('centros.create', $lang) }}" class="btn btn-primary mb-5">Crear nuevo centro</a>
-
+    @endcan
 
 @endsection

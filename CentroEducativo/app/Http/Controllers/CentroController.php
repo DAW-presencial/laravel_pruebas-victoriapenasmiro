@@ -19,9 +19,11 @@ class CentroController extends Controller
      */
     public function index($lang)
     {
+        $can_modify = new Centro;
+
         $centros = Centro::all();
 
-        return view('centros.index', compact('lang', 'centros'));
+        return view('centros.index', compact('lang', 'centros', 'can_modify'));
         //return redirect()->route('centros.create', compact('lang'));
     }
 
@@ -32,11 +34,13 @@ class CentroController extends Controller
      */
     public function create($lang)
     {
+        $can_create = new Centro;
         $ambitos = Ambito::all();
 
         $this->authorize('check-language', $lang);
+        $this->authorize('create', $can_create, 403);
 
-        return view('centros.create', compact('lang', 'ambitos'));
+        return view('centros.create', compact('lang', 'ambitos', 'can_create'));
     }
 
     /**
@@ -47,6 +51,9 @@ class CentroController extends Controller
      */
     public function store(StoreCentro $request, $lang)
     {
+        $can_create = new Centro;
+        $this->authorize('create', $can_create, 403);
+
         $centro = Centro::create($request->all());
 
         //completo la tabla centros_ambitos
@@ -64,6 +71,7 @@ class CentroController extends Controller
      */
     public function show($lang, Centro $centro)
     {
+        $can_modify = new Centro;
         $this->authorize('check-language', $lang);
 
         //recupero el listado de ambitos de este centro
@@ -75,7 +83,7 @@ class CentroController extends Controller
             array_push($listado_ambitos, Ambito::find($ambito)->nombre);
         }
 
-        return view('centros.show', compact('lang', 'centro', 'listado_ambitos'));
+        return view('centros.show', compact('lang', 'centro', 'listado_ambitos', 'can_modify'));
     }
 
     /**
@@ -87,6 +95,8 @@ class CentroController extends Controller
     public function edit($lang, Centro $centro)
     {
         $ambitos = Ambito::all();
+        $can_edit = new Centro;
+        $this->authorize('update', $can_edit, 403);
         
         //recupero el listado de ambitos de este centro
         $ambitos_id = $centro->ambitos()->allRelatedIds()->toArray();
@@ -105,6 +115,9 @@ class CentroController extends Controller
      */
     public function update(StoreCentro $request, $lang, Centro $centro)
     {
+        $can_edit = new Centro;
+        $this->authorize('update', $can_edit, 403);
+
         //actualización por asignación masiva
         $centro->update($request->all());
 
@@ -122,6 +135,9 @@ class CentroController extends Controller
      */
     public function destroy($lang, Centro $centro)
     {
+        $can_delete = new Centro;
+        $this->authorize('delete', $can_delete, 403);
+
         $centro->delete();
 
         // Elimino la relación del centro con ambitos dentro de centros_ambitos
