@@ -28,6 +28,17 @@ El proyecto se ha desplegado en el servidor del centro, dentro de la ruta */var/
     });
 ~~~
 
+### FormRequest - validació multiidioma
+* Con el objetivo de mostrar los warnings de validación en el idioma correspondiente, se controla en el Form Request creado. ///////TODO, poner nombre
+
+~~~
+$lang = $this->route('lang');
+abort_unless(Gate::allows('check-language', $lang), 403);
+~~~
+
+### Error Pages //TODOOOOO mantengo ??
+Se han generado unas vistas personalizadas para los errores 404 y 403.
+
 ### Tags
 Para cada punto del examen se ha hecho un commit y se ha etiquetado con un tag haciendo referencia al punto del ejercicio.
 

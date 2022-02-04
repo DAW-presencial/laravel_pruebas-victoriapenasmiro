@@ -19,6 +19,7 @@ class CentroController extends Controller
      */
     public function index($lang)
     {
+        $this->authorize('check-language', $lang);
         $can_modify = new Centro;
 
         $centros = Centro::all();
