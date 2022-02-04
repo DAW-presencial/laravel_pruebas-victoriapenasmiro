@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Administrador',
             'email' => 'mpenas@cifpfbmoll.eu',
             'email_verified_at' => now(),
-            'password' => Hash::make('Sistemas1310'),
+            'password' => Hash::make('Examen2022'),
             'remember_token' => Str::random(10),
         ]);
 

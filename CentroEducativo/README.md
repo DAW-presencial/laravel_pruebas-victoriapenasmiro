@@ -1,3 +1,10 @@
+## Usuarios:
+Todos los usuarios que se registran desde cero no tienen permisos de admin, y por tanto, no podrán crear, eliminar o editar centros.
+
+#### Acceso administrador:
+* Usuario: mpenas@cifpfbmoll.eu
+* Password: Examen2022
+
 ## Base de datos
 La base de datos está desplegada en un servidor remoto de IONOS.
 
