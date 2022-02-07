@@ -19,6 +19,9 @@ El acceso a la base de datos se puede recuperar desde el .env del proyecto.
 El proyecto se ha desplegado en el servidor del centro, dentro de la ruta */var/www/ifc33b/mpenas/* [Ver aplicacion](http://mpenas.ifc33b.cifpfbmoll.eu/laravel_pruebas-victoriapenasmiro/CentroEducativo/public/es/centros).
 
 ## Aspectos generales
+### Input type=file
+Se ha limitado el input type file del formulario para que solo permita la subida de archivos de tipo imagen.
+
 ### 🔁 Old values
 En el caso concreto del input type=file no es posible mostrar el fichero previamente subido después de realizar un submit. Es el comportamiento por defecto de los navegadores por temas de seguridad.
 
