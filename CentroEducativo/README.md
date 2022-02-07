@@ -111,7 +111,7 @@ Por ejemplo: [http://mpenas.ifc33b.cifpfbmoll.eu/laravel_pruebas-victoriapenasmi
 Para cada punto del examen se ha hecho un commit y se ha etiquetado con un tag haciendo referencia al punto del ejercicio.
 
 ### .env file
-Se ha generado una copia del fichero .env *.env copy*
+Se ha generado una copia del fichero .env: *.env copy*
 
 
 
