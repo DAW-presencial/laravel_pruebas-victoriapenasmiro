@@ -6,6 +6,7 @@ use App\Models\Ambito;
 use App\Models\Centro;
 use App\Models\Centro_Ambito;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -26,11 +27,11 @@ class DatabaseSeeder extends Seeder
             AmbitoSeeder::class, //completo los valores de la tabla ambito
         ]);
 
-        //sentencias raw (dependientes del SGBD)
+        // ********* sentencias raw (dependientes del SGBD) *********
         DB::insert('insert into centros (nombre, descripcion, cod_asd, fec_comienzo_actividad, opcion_radio, guarderia, 
-        categoria) values (?, ?, ?, ?, ?, ?, ?)', array('Centro Dayle', 'decripcion test', 1, '2020-09-23', 'segundo radio', 0, 2));
+        categoria, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', array('Centro Dayle', 'decripcion test', 1, '2020-09-23', 'segundo radio', 0, 2, Carbon::now(), Carbon::now()));
 
-        //QueryBuilder
+        // ********* QueryBuilder *********
         $centros = [
             'nombre' => 'Centro Vicky',
             'descripcion' => 'Esto es una prueba de registro con QueryBuilder',
@@ -38,17 +39,20 @@ class DatabaseSeeder extends Seeder
             'fec_comienzo_actividad' => '2018-01-01',
             'opcion_radio' => 'radio primero',
             'guarderia' => 1,
-            'categoria' => 5
+            'categoria' => 5,
+            "created_at" => Carbon::now(), # new \Datetime()
+            "updated_at" => Carbon::now(),  # new \Datetime()
         ];
 
         DB::table('centros')->insert($centros);
 
-        //Eloquent
+        // ********* Eloquent *********
         Centro::factory(1)->create();
 
         //completo la tabla de comunidades con el id del administrador, sin factories
         $todos_centros = Centro::all();
 
+        //completo la tabla intermedia centros_ambitos de forma aleatoria
         foreach ($todos_centros as $centro) {
             $ambito = Ambito::inRandomOrder()->first();
 

@@ -23,6 +23,7 @@ class AmbitoSeeder extends Seeder
             ['nombre' => 'fp'],
         ];
 
+        //QueryBuilder
         DB::table('ambitos')->insert($ambitos);
     }
 }

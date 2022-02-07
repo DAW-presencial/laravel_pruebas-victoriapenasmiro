@@ -27,9 +27,10 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+// Para acceder a esta ruta es necesario estar autenticado
 Route::resource('{lang}/centros', CentroController::class)->middleware('auth');
 
 //Si la ruta no existe puedo indicar qué vista mostrar
 Route::fallback(function(){
-  return view('/dashboard');
+  Abort(403);
 });

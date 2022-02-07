@@ -16,7 +16,8 @@
         </div>
     @endif
 
-    <form action="{{ route('centros.store', $lang) }}" method="POST">
+    {{-- enctype --> para aceptación de envío de archivos --}}
+    <form action="{{ route('centros.store', $lang) }}" method="POST" enctype="multipart/form-data">
 
         {{-- genero token para poder enviar el formulario. Directoiva obligatoria en Laravel --}}
         @csrf
@@ -85,7 +86,8 @@
                         </label>
                     </div>
                     <div class="form-check disabled">
-                        <input class="form-check-input" type="radio" name="opcion_radio" id="radio3" value="option3" disabled>
+                        <input class="form-check-input" type="radio" name="opcion_radio" id="radio3" value="option3"
+                            disabled>
                         <label class="form-check-label" for="radio3">
                             @lang('centros.tercer_radio')
                         </label>
@@ -146,11 +148,23 @@
             @enderror
         </div>
 
-        <div class="form-group row">
+        {{-- Por razones de seguridad, los navegadores no pueden recuperar la ubicacion
+            del fichero, por tanto, no es posible utilizar old values aquí
+            + info en https://stackoverflow.com/questions/16365668/pre-populate-html-form-file-input --}}
+        <div class="form-group">
+            <label for="logo"><strong>LOGO</strong></label>
+            <input type="file" class="form-control-file" id="logo" name="logo">
+            @error('logo')
+                <small class="text-danger">*{{ $message }}</small>
+            @enderror
+        </div>
+
+        <div class="form-group row mt-3">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-success">{{ __('centros.registrar') }}</button>
                 <a href="{{ route('centros.index', $lang) }}" class="btn btn-primary">@lang('centros.volver')</a>
             </div>
         </div>
+
     </form>
 @endsection

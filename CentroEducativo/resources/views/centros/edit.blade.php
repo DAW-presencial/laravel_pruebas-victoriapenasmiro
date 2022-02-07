@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <form action="{{ route('centros.update', [$lang, $centro]) }}" method="POST">
+    <form action="{{ route('centros.update', [$lang, $centro]) }}" method="POST" enctype="multipart/form-data">
 
         {{-- genero token para poder enviar el formulario. Directoiva obligatoria en Laravel --}}
         @csrf
@@ -77,11 +77,10 @@
                 <div class="col-sm-10">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="opcion_radio" id="radio1" value="option1"
-                            {{-- Si no existe y no es la primera vez que se accede al registro se marca checked --}}
-                        @if (old('opcion_radio') == 'option1')
-                            checked
-                        @elseif(!old('opcion_radio') && !$errors->any())
-                            checked
+                            {{-- Si no existe y no es la primera vez que se accede al registro se marca checked --}} @if (old('opcion_radio') == 'option1')
+                        checked
+                    @elseif(!old('opcion_radio') && !$errors->any())
+                        checked
                         @endif
                         > <label class="form-check-label" for="radio1">
                             @lang('centros.primer_radio')
@@ -89,10 +88,10 @@
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="opcion_radio" id="radio2" value="option2"
-                        @if (old('opcion_radio') == 'option2')
-                            checked
-                        @elseif(!old('opcion_radio') && !$errors->any())
-                            checked
+                            @if (old('opcion_radio') == 'option2')
+                        checked
+                    @elseif(!old('opcion_radio') && !$errors->any())
+                        checked
                         @endif
                         >
                         <label class="form-check-label" for="radio2">
@@ -118,11 +117,10 @@
             <div class="col-sm-10">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="guarderia" name="guarderia" value="1"
-                        {{-- Si no existe y no es la primera vez que se accede al registro se marca checked --}}
-                    @if (old('guarderia'))
-                        checked
-                    @elseif(!old('guarderia') && !$errors->any())
-                        checked
+                        {{-- Si no existe y no es la primera vez que se accede al registro se marca checked --}} @if (old('guarderia'))
+                    checked
+                @elseif(!old('guarderia') && !$errors->any())
+                    checked
                     @endif
                     >
 
@@ -160,13 +158,11 @@
             <select multiple class="form-control" id="ambitos" name="ambitos[]">
 
                 @foreach ($ambitos as $ambito)
-                    <option value="{{ $ambito->id }}"
-                                                
-                    @if (old('ambitos'))
+                    <option value="{{ $ambito->id }}" @if (old('ambitos'))
                         {{ in_array($ambito->id, old('ambitos')) ? 'selected' : '' }}
                     @elseif(!old('ambitos') && !$errors->any() && in_array($ambito->id, $ambitos_id))
                         selected
-                    @endif
+                @endif
                 >
                 {{ __('centros.' . $ambito->nombre) }}</option>
                 @endforeach
@@ -176,6 +172,23 @@
                 <small class="text-danger">*{{ $message }}</small>
             @enderror
         </div>
+
+        {{-- Por razones de seguridad, los navegadores no pueden recuperar la ubicacion
+            del fichero, por tanto, no es posible utilizar old values aquí
+            + info en https://stackoverflow.com/questions/16365668/pre-populate-html-form-file-input --}}
+        <div class="form-group">
+            <label for="logo"><strong>LOGO</strong></label>
+            <input type="file" class="form-control-file" id="logo" name="logo">
+            @error('logo')
+                <small class="text-danger">*{{ $message }}</small>
+            @enderror
+        </div>
+
+        @if ($centro->logo)
+            <div class="col-12 my-3">
+                <img src="{{ asset('storage/' . $centro->logo) }}" alt="logo {{ $centro->nombre }}" height="150" />
+            </div>
+        @endif
 
         <div class="form-group row">
             <div class="col-sm-10">
