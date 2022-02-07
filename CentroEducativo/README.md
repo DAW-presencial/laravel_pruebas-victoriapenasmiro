@@ -79,7 +79,7 @@ Se ha creado *CentroPolicy* para controlar que únicamente el usuario administra
 El resto de usuarios, solo tendrán permisos de consulta.
 
 ### ✅ FormRequest - validació multiidioma
-* Con el objetivo de mostrar los warnings de validación en el idioma correspondiente, se controla en el Form Request creado. ///////TODO, poner nombre
+* Con el objetivo de mostrar los warnings de validación en el idioma correspondiente, se controla en el Form Request creado: StoreCentro
 
 ~~~
 $lang = $this->route('lang');
