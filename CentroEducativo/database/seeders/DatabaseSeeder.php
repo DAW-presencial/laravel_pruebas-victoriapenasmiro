@@ -71,5 +71,10 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
+        // ejemplo importar ficheros cargados en /database
+        // $sql = public_path('../database/paises.sql');
+        // DB::unprepared(file_get_contents($sql));
+
+
     }
 }

@@ -33,10 +33,10 @@ class StoreCentro extends FormRequest
         //return ddd($this->getMethod());
 
         return [
-            'nombre' => 'required',
-            'cod_asd' => 'required',
-            // 'descripcion' => 'required', --> campo nullable
-            'fec_comienzo_actividad' => 'required',
+            'nombre' => 'required|string|max:50',
+            'cod_asd' => 'required|integer|min:1|max:700',
+            'descripcion' => 'nullable|alpha_num',
+            'fec_comienzo_actividad' => 'required|date',
             'opcion_radio' => 'required',
             'guarderia' => 'required',
             'categoria' => 'required',
@@ -46,6 +46,13 @@ class StoreCentro extends FormRequest
                 'image',
             ]
         ];
+
+        //     examples
+        //     'email' => 'required|email:rfc,dns',
+        //     'pw' => 'required|size:8|alpha_num',
+        //     'address' => 'required|string|alpha_num|max:155',
+        //     'city' => 'required|alpha',
+        //     'codigoISO3' => 'required|digits:3|integer',
     }
 
     //para modificar el mensaje completo de error
